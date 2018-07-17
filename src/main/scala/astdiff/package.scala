@@ -20,6 +20,9 @@ package object astdiff {
         otd1.===(otd2)(ObjectTypeDefinitionEquality)
       case (etd1: EnumTypeDefinition, etd2: EnumTypeDefinition) =>
         etd1.===(etd2)(EnumTypeDefinitionEquality)
+      case (iotd1: InputObjectTypeDefinition,
+            iotd2: InputObjectTypeDefinition) =>
+        iotd1.===(iotd2)(InputObjectTypeDefinitionEquality)
       case _ => false
     }
   }
@@ -58,6 +61,19 @@ package object astdiff {
           haveSameElements(lhs.directives, rhs.directives)(DirectiveEquality)
       case _ => false
     }
+  }
+
+  implicit object InputObjectTypeDefinitionEquality
+      extends Equality[InputObjectTypeDefinition] {
+    override def areEqual(lhs: InputObjectTypeDefinition, b: Any): Boolean =
+      b match {
+        case rhs: InputObjectTypeDefinition =>
+          lhs.name == rhs.name &&
+            haveSameElements(lhs.fields, rhs.fields)(
+              InputValueDefinitionEquality) &&
+            haveSameElements(lhs.directives, rhs.directives)(DirectiveEquality)
+        case _ => false
+      }
   }
 
   implicit object NamedTypeEquality extends Equality[NamedType] {

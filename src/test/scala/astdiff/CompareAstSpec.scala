@@ -9,20 +9,48 @@ class CompareAstSpec extends WordSpec with Matchers {
 
   "Ast comparison" should {
 
-    "tell two asts are equivalents" in {
-      val doc1 = Document(
-        Vector.empty,
-        Vector(Comment("a comment", Some(AstLocation(1, 1, 1)))),
-        None,
-        None
-      )
-      val doc2 = Document(
-        Vector.empty,
-        Vector.empty,
-        Some(AstLocation(0, 0, 0)),
-        Some(new DefaultSourceMapper("id", new StringBasedParserInput("")))
-      )
-      CompareAst.equivalence(doc1, doc2) shouldBe Equivalents
+    "tell two asts are equivalents" when {
+
+      "there's no fields" in {
+        val doc1 = Document(
+          Vector.empty,
+          Vector(Comment("a comment", Some(AstLocation(1, 1, 1)))),
+          None,
+          None
+        )
+        val doc2 = Document(
+          Vector.empty,
+          Vector.empty,
+          Some(AstLocation(0, 0, 0)),
+          Some(new DefaultSourceMapper("id", new StringBasedParserInput("")))
+        )
+        CompareAst.equivalence(doc1, doc2) shouldBe Equivalents
+      }
+
+      "there are input object type definitions" in {
+        val doc1 = Document(
+          Vector(
+            InputObjectTypeDefinition(
+              "human",
+              Vector(InputValueDefinition("name", NamedType("string"), None))
+            )),
+          Vector.empty,
+          None,
+          None
+        )
+        val doc2 = Document(
+          Vector(
+            InputObjectTypeDefinition(
+              "human",
+              Vector(InputValueDefinition("name", NamedType("string"), None))
+            )),
+          Vector.empty,
+          None,
+          None
+        )
+        CompareAst.equivalence(doc1, doc2) shouldBe Equivalents
+      }
+
     }
 
     "tell two asts are not equivalent and why" when {
