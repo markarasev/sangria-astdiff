@@ -4,8 +4,6 @@ organization := "markarasev"
 
 description := "Utility to compare sangria ast documents."
 
-version := "0.1"
-
 scalaVersion := "2.12.6"
 
 libraryDependencies ++= Seq(
