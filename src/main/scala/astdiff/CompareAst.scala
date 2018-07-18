@@ -15,13 +15,23 @@ case class NotEquivalents(override val diff: String) extends AstEquivalence
 
 object NotEquivalents {
 
-  def apply[T <: AstNode](left: Vector[T], right: Vector[T]): NotEquivalents =
+  def apply[N <: AstNode](left: Vector[N], right: Vector[N]): NotEquivalents =
     NotEquivalents(
       s"""
-         |left:  ${left.map(_.renderCompact)}
-         |right: ${right.map(_.renderCompact)}
+         |left:  ${left.map(render)}
+         |right: ${right.map(render)}
         """.stripMargin
     )
+
+  private def render[N <: AstNode](node: N): String = {
+    val splitOnDoubleQuotes = node.renderCompact.split('"')
+    val withoutCommentsBuilder = new StringBuilder()
+    splitOnDoubleQuotes.zipWithIndex.foreach {
+      case (str, i) if i % 2 == 0 => withoutCommentsBuilder.append(str)
+      case _                      =>
+    }
+    withoutCommentsBuilder.result()
+  }
 
 }
 
