@@ -27,7 +27,7 @@ object NotEquivalents {
     val splitOnDoubleQuotes = node.renderCompact.split('"')
     val withoutCommentsBuilder = new StringBuilder()
     splitOnDoubleQuotes.zipWithIndex.foreach {
-      case (str, i) if i % 2 == 0 => withoutCommentsBuilder.append(str)
+      case (str, i) if i % 2 == 0 => withoutCommentsBuilder.append(str.trim)
       case _                      =>
     }
     withoutCommentsBuilder.result()

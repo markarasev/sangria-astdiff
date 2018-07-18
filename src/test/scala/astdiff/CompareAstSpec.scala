@@ -70,7 +70,7 @@ class CompareAstSpec extends WordSpec with Matchers {
         )
         CompareAst.equivalence(doc1, doc2) shouldEqual NotEquivalents(
           s"""
-             |left:  Vector(type otd )
+             |left:  Vector(type otd)
              |right: Vector()
         """.stripMargin
         )

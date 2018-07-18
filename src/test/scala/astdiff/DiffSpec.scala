@@ -24,8 +24,8 @@ class DiffSpec extends WordSpec with Matchers {
         ))
       val expected =
         """
-          |left:  Vector( type human {name:string})
-          |right: Vector( type droid {name:string})
+          |left:  Vector(type human {name:string})
+          |right: Vector(type droid {name:string})
         """.stripMargin
       NotEquivalents(left, right).diff shouldEqual expected
     }
